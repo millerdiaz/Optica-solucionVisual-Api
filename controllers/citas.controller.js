@@ -8,7 +8,7 @@ exports.createCitas = async (req, res) => {
     await Citas.create(dataUser);
     return res.json({ ok: true, msg: "Cita creada correctamente" });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     
     res.send("Error al crear Cita");
   }
@@ -20,7 +20,7 @@ exports.getCitas = async (req, res) => {
     const citas = await Citas.find();
     res.status(200).json(citas);
   } catch (error) {
-    console.error("Error al obtener citas:", error);
+    console.error("Error al obtener citas:", error.message);
     res.status(500).json({ error: "Se ha generado un error" });
   }
 };
@@ -43,7 +43,7 @@ exports.getOne = async (req, res) => {
       res.status(400).json({ error: "El ID no tiene la longitud requerida" });
     }
   } catch (error) {
-    console.error("Error al obtener la cita:", error);
+    console.error("Error al obtener la cita:", error.message);
     res.status(500).json({ error: "Se ha generado un error" });
   }
 };
@@ -67,7 +67,7 @@ exports.addCitas = async (req, res) => {
         .json({ error: "Ya existe una cita creada con esa identificación" });
     }
   } catch (error) {
-    console.error("Error al crear la cita:", error);
+    console.error("Error al crear la cita:", error.message);
     res.status(500).json({ error: "Se ha generado un error" });
   }
 };
@@ -106,19 +106,9 @@ exports.modificarCitas = async (req, res) => {
       const cita = await Citas.findById(id);
 
       if (cita) {
-        // Verificar si otra cita tiene el mismo documentoIdentidad
-        const citaExistente = await Citas.findOne({
-          documentoIdentidad: modificaciones.documentoIdentidad,
-          _id: { $ne: id }, // Excluir la cita actual
-        });
-
-        if (citaExistente) {
-          res.status(409).json({ error: "Ya existe una cita con esta cédula" });
-        } else {
-          Object.assign(cita, modificaciones);
-          const citaActualizada = await cita.save();
-          res.status(200).json(citaActualizada);
-        }
+        Object.assign(cita, modificaciones);
+        const citaActualizada = await cita.save();
+        res.status(200).json(citaActualizada);
       } else {
         res.status(404).json({ error: "No se encontró una cita con ese ID" });
       }
@@ -126,7 +116,8 @@ exports.modificarCitas = async (req, res) => {
       res.status(400).json({ error: "El ID no tiene la longitud requerida" });
     }
   } catch (error) {
-    console.error("Error al modificar la cita:", error);
+    console.error("Error al modificar la cita:", error.message);
     res.status(500).json({ error: "Se ha generado un error" });
   }
 };
+

@@ -1,38 +1,30 @@
+const { type } = require("express/lib/response");
 const mongoose = require("mongoose")
 
-// const CitasSchema = new mongoose.Schema({
-//     nombres: {
-//         type: String,
-//         required: true
-//     },
-//     apellidos: {
-//         type: String,
-//         required: true
-//     },
-//     documentoIdentidad: {
-//         type: Number,
-//         required: true
-//     },
-//     fecha: {
-//         type: Date,
-//         required: true
-//     },
-//     sede: {
-//         type: String,
-//         required: true,
-//         enum: ['Sede Centro', 'Sede Teusaquillo', 'Sede Chapinero', 'Sede Norte', 'Sede Sur']
-//     },
-//     especialista: {
-//         type: String,
-//         required: true
-//     }
-// }, {
-//     timestamps: true,
-//     versionKey: false  
-// });
 
 const CitasSchema = new mongoose.Schema({
-   
+
+nombreCompleto: {
+    type:String,
+    required: true,
+},
+
+cedula:{
+    type: Number,
+    required: true,
+},
+
+telefono:{
+    type: Number
+},
+
+email:{
+    type: String,
+    required: true,
+},
+
+
+
     ciudad: {
         type: String,
         required: true,
@@ -52,7 +44,6 @@ const CitasSchema = new mongoose.Schema({
             'CC Oviedo',
             'CC El Tesoro',
             'CC Viva Envigado',
-           
             
             // Cali
             
@@ -99,7 +90,7 @@ const CitasSchema = new mongoose.Schema({
         ]
         
     },
-  
+
     fecha: {
         type: String,
         required: true
@@ -108,6 +99,22 @@ const CitasSchema = new mongoose.Schema({
     timestamps: true,
     versionKey: false  
 });
+
+
 module.exports = mongoose.model("Citas", CitasSchema);
 
+
+/*
+
+{
+"ciudad": "Bogotá",
+"tienda": "Chapinero",
+"tipoDeCita": "Examen de vista",
+"especialista":"Alberto Martínez",
+"fecha": 21032025,
+"sede": "Teusquillo"
+
+}
+
+*/
 
